@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Screenshot Mockup Generator</string>
+    <string name="choose_colors">Choose colors</string>
+    <string name="save">Save</string>
+    <string name="error_returned_uri_is_null">Error: Returned Uri is null</string>
+    <string name="the_permission_is_needed_to_select_a_screenshot">The permission is needed to select a screenshot.</string>
+    <string name="start_gradient_color">Start gradient color</string>
+    <string name="end_gradient_color">End gradient color</string>
+    <string name="create_a_gradient_background">Create a gradient background</string>
+    <string name="ok">Ok</string>
+    <string name="background_color">Background color</string>
+</resources>

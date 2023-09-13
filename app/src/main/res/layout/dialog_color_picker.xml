@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="20dp"
+        android:layout_height="wrap_content">
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/cb_use_gradient"
+            android:text="@string/create_a_gradient_background"
+            android:layout_height="wrap_content"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="10dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:id="@+id/tv_color"
+                android:text="@string/background_color"
+                android:layout_height="wrap_content"/>
+
+            <codes.side.andcolorpicker.hsl.HSLColorPickerSeekBar
+                android:id="@+id/start_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hslColoringMode="pure"
+                app:hslMode="hue" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_margin="10dp"
+            android:visibility="gone"
+            android:id="@+id/ll_end_color"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:text="@string/end_gradient_color"
+                android:layout_height="wrap_content"/>
+
+            <codes.side.andcolorpicker.hsl.HSLColorPickerSeekBar
+                android:id="@+id/end_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hslColoringMode="pure"
+                app:hslMode="hue" />
+
+        </LinearLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_gravity="end"
+            android:text="@string/ok"
+            android:id="@+id/btn_save_colors"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+</LinearLayout>
