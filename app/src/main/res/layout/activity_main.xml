@@ -6,21 +6,31 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-   <ImageView
+   <com.jsibbold.zoomage.ZoomageView
+       app:zoomage_restrictBounds="false"
+       app:zoomage_animateOnReset="true"
+       app:zoomage_autoResetMode="UNDER"
+       app:zoomage_autoCenter="true"
+       app:zoomage_zoomable="true"
+       app:zoomage_translatable="true"
+       app:zoomage_minScale="0.6"
+       app:zoomage_maxScale="8"
        android:layout_width="wrap_content"
        android:id="@+id/iv_mockup"
-       android:layout_marginStart="50dp"
-       android:layout_marginTop="50dp"
-       android:layout_marginEnd="50dp"
+       android:layout_marginStart="10dp"
+       android:layout_marginTop="10dp"
+       android:layout_marginEnd="10dp"
        android:layout_marginBottom="100dp"
        android:src="@drawable/frame_pixel"
        android:layout_height="wrap_content"/>
-
+<HorizontalScrollView
+    android:layout_centerInParent="true"
+    android:layout_width="wrap_content"
+    android:layout_marginBottom="5dp"
+    android:layout_alignParentBottom="true"
+    android:layout_height="wrap_content">
    <LinearLayout
-       android:layout_centerInParent="true"
        android:layout_width="wrap_content"
-       android:layout_marginBottom="5dp"
-       android:layout_alignParentBottom="true"
        android:layout_height="wrap_content">
       <Button
           android:layout_width="wrap_content"
@@ -30,11 +40,19 @@
           android:layout_height="wrap_content"/>
       <Button
           android:layout_width="wrap_content"
+          android:text="@string/select_screenshot"
+          android:layout_margin="2dp"
+          android:id="@+id/btn_select_screen"
+          android:layout_height="wrap_content"/>
+      <Button
+          android:layout_width="wrap_content"
           android:text="@string/save"
           android:layout_margin="2dp"
           android:id="@+id/btn_save"
           android:layout_height="wrap_content"/>
    </LinearLayout>
+
+</HorizontalScrollView>
 
 
 </RelativeLayout>

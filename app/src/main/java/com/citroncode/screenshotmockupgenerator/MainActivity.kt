@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.LinearGradient
+import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Shader
 import android.graphics.drawable.Drawable
@@ -48,9 +49,12 @@ class MainActivity : AppCompatActivity() {
     lateinit var screenshot: Bitmap
     lateinit var background: Bitmap
     lateinit var frame: Bitmap
-    lateinit var mergedScreenshot: Bitmap
+    lateinit var mergedScreenshot : Bitmap
+    lateinit var mergedFrame : Bitmap
     var defaultBackgroundColor : Int = Color.parseColor("#128C7F")
     private var selectedDirectoryUri: Uri? = null
+    var width : Int = 1400
+    var height : Int = 3000
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,7 +70,7 @@ class MainActivity : AppCompatActivity() {
         binding.btnChooseColors.setOnClickListener {
             colorPickerDialog()
         }
-        binding.ivMockup.setOnClickListener {
+        binding.btnSelectScreen.setOnClickListener {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES)
                 == PackageManager.PERMISSION_GRANTED
             ) {
@@ -145,26 +149,43 @@ class MainActivity : AppCompatActivity() {
         }
         background = colorizeBitmap(defaultBackgroundColor)
     }
-
     fun mergeBitmaps(): Bitmap {
-        mergedScreenshot = Bitmap.createBitmap(1400, 3000, Bitmap.Config.ARGB_8888)
+        mergedScreenshot = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(mergedScreenshot)
-
-
         canvas.drawBitmap(background, 0f, 0f, null)
 
+        var centerXscreenshot : Float
+        var centerYscreenshot : Float
+        if(screenshot.width > screenshot.height){
+            centerXscreenshot = ((mergedScreenshot.width - screenshot.height) / 2f) - 5f
+            centerYscreenshot = ((mergedScreenshot.height - screenshot.width) / 2f) - 12f
+        }else{
+            centerXscreenshot = ((mergedScreenshot.width - screenshot.width) / 2f) - 5f
+            centerYscreenshot = ((mergedScreenshot.height - screenshot.height) / 2f) - 12f
+        }
 
-        val centerXscreenshot = ((mergedScreenshot.width - screenshot.width) / 2f) - 5f
-        val centerYscreenshot = ((mergedScreenshot.height - screenshot.height) / 2f) - 12f
-        canvas.drawBitmap(screenshot, centerXscreenshot, centerYscreenshot, null)
+        canvas.drawBitmap(rotateBitmap(screenshot,90f), centerXscreenshot, centerYscreenshot, null)
 
         val centerXframe = (mergedScreenshot.width - frame.width) / 2f
         val centerYframe = (mergedScreenshot.height - frame.height) / 2f
         canvas.drawBitmap(frame, centerXframe, centerYframe, null)
 
+        if(screenshot.width > screenshot.height){
+            return rotateBitmap(mergedScreenshot,270f)
+        }
         return mergedScreenshot
     }
+    fun rotateBitmap(bitmap: Bitmap, rotation : Float): Bitmap {
+        if(screenshot.width > screenshot.height){
+            val matrix = Matrix()
+            matrix.postRotate(rotation)
 
+            return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+        }else{
+            return bitmap
+        }
+
+    }
     fun colorPickerDialog() {
         dialogBinding = DialogColorPickerBinding.inflate(layoutInflater)
 
@@ -201,9 +222,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun createGradientBitmap(color1: Int, color2: Int): Bitmap {
-        val width = 1400
-        val height = 3000
-
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
 
         val canvas = Canvas(bitmap)
@@ -222,7 +240,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun colorizeBitmap(color: Int): Bitmap {
-        val colorizedBitmap = Bitmap.createBitmap(1400, 3000, Bitmap.Config.ARGB_8888)
+        val colorizedBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
 
         val canvas = Canvas(colorizedBitmap)
 
@@ -230,7 +248,7 @@ class MainActivity : AppCompatActivity() {
         paint.color = color
         paint.isAntiAlias = true
 
-        canvas.drawRect(0f, 0f, 1400.toFloat(), 3000.toFloat(), paint)
+        canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), paint)
 
         return colorizedBitmap
 }
@@ -252,21 +270,14 @@ class MainActivity : AppCompatActivity() {
                     imageFile?.let { outputFile ->
                         contentResolver.openOutputStream(outputFile.uri)?.use { outputStream ->
                             mergedScreenshot.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-                            Toast.makeText(
-                                this,
-                                "Bild erfolgreich gespeichert.",
-                                Toast.LENGTH_SHORT
-                            )
-                                .show()
+                            Toast.makeText(this, getString(R.string.mockup_successfully_saved), Toast.LENGTH_SHORT).show()
                         }
                     } ?: run {
-                        Toast.makeText(this, "Fehler beim Erstellen der Datei.", Toast.LENGTH_SHORT)
-                            .show()
+                        Toast.makeText(this, getString(R.string.error_while_writing_the_file), Toast.LENGTH_SHORT).show()
                     }
                 }
             } catch (e: Exception) {
-                Toast.makeText(this, "Fehler beim Speichern des Bildes.", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(this, getString(R.string.error_while_saving_the_image), Toast.LENGTH_SHORT).show()
             }
         }
     }

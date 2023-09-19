@@ -9,4 +9,8 @@
     <string name="create_a_gradient_background">Create a gradient background</string>
     <string name="ok">Ok</string>
     <string name="background_color">Background color</string>
+    <string name="error_while_saving_the_image">Error while saving the image!</string>
+    <string name="error_while_writing_the_file">Error while writing the file!</string>
+    <string name="mockup_successfully_saved">Mockup successfully saved!</string>
+    <string name="select_screenshot">Select screenshot</string>
 </resources>
